@@ -1,21 +1,22 @@
 using System;
+using System.Collections.Generic;
 
 namespace DIO.Series
 {
     public class Serie : EntidadeBase
     {
         // Atributos
-		private Genero Genero { get; set; }
+		private Genero[] Generos = new Genero[10];
+		private int countGeneros = 0;
 		private string Titulo { get; set; }
 		private string Descricao { get; set; }
 		private int Ano { get; set; }
         private bool Excluido {get; set;}
 
         // Métodos
-		public Serie(int id, Genero genero, string titulo, string descricao, int ano)
+		public Serie(int id, string titulo, string descricao, int ano)
 		{
 			this.Id = id;
-			this.Genero = genero;
 			this.Titulo = titulo;
 			this.Descricao = descricao;
 			this.Ano = ano;
@@ -25,7 +26,13 @@ namespace DIO.Series
         public override string ToString()
 		{
 			string retorno = "";
-            retorno += "Gênero: " + this.Genero + Environment.NewLine;
+            retorno += "Gêneros: ";
+			for(int i = 0; i<countGeneros; i++){
+				retorno += this.Generos[i];
+				if(i+1<countGeneros)
+					retorno += ", ";
+			}
+			retorno += Environment.NewLine;
             retorno += "Titulo: " + this.Titulo + Environment.NewLine;
             retorno += "Descrição: " + this.Descricao + Environment.NewLine;
             retorno += "Ano de Início: " + this.Ano + Environment.NewLine;
@@ -49,5 +56,14 @@ namespace DIO.Series
         public void Excluir() {
             this.Excluido = true;
         }
+
+		public void addGenero(Genero genero){
+			if(countGeneros<10){
+				Generos[countGeneros] = genero;
+				countGeneros++;
+			} else {
+				Console.WriteLine("Número máximo de gêneros atingido.");
+			}
+		}
     }
 }

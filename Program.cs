@@ -3,7 +3,6 @@
 TODO: 
 aumentar as opções
 adicionar filmes
-adicionar lista de gêneros em um mesmo objeto
 tratar erros e melhorar experiencia do usuário com perguntas de confirmação
 procurar se há interfaces gráficas de fácil implementação para deixar o projeto mais bonito
 pensar em mais coisas se for o caso
@@ -75,27 +74,18 @@ namespace DIO.Series
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
+			Serie atualizaSerie = CadastraSerie(indiceSerie);
+			
 			foreach (int i in Enum.GetValues(typeof(Genero)))
 			{
 				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
 			}
-			Console.Write("Digite o gênero entre as opções acima: ");
-			int entradaGenero = int.Parse(Console.ReadLine());
-
-			Console.Write("Digite o Título da Série: ");
-			string entradaTitulo = Console.ReadLine();
-
-			Console.Write("Digite o Ano de Início da Série: ");
-			int entradaAno = int.Parse(Console.ReadLine());
-
-			Console.Write("Digite a Descrição da Série: ");
-			string entradaDescricao = Console.ReadLine();
-
-			Serie atualizaSerie = new Serie(id: indiceSerie,
-										genero: (Genero)entradaGenero,
-										titulo: entradaTitulo,
-										ano: entradaAno,
-										descricao: entradaDescricao);
+			do{
+				Console.Write("Digite o gênero entre as opções acima: ");
+				int entradaGenero = int.Parse(Console.ReadLine());
+				atualizaSerie.addGenero((Genero)entradaGenero);
+				Console.WriteLine("Deseja inserir mais um gênero?(y/n)");
+			} while(Console.ReadLine().ToUpper().Equals("Y"));
 
 			repositorio.Atualiza(indiceSerie, atualizaSerie);
 		}
@@ -123,27 +113,18 @@ namespace DIO.Series
 		{
 			Console.WriteLine("Inserir nova série");
 
+			Serie novaSerie = CadastraSerie(repositorio.ProximoId());
+			
 			foreach (int i in Enum.GetValues(typeof(Genero)))
 			{
 				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
 			}
-			Console.Write("Digite o gênero entre as opções acima: ");
-			int entradaGenero = int.Parse(Console.ReadLine());
-
-			Console.Write("Digite o Título da Série: ");
-			string entradaTitulo = Console.ReadLine();
-
-			Console.Write("Digite o Ano de Início da Série: ");
-			int entradaAno = int.Parse(Console.ReadLine());
-
-			Console.Write("Digite a Descrição da Série: ");
-			string entradaDescricao = Console.ReadLine();
-
-			Serie novaSerie = new Serie(id: repositorio.ProximoId(),
-										genero: (Genero)entradaGenero,
-										titulo: entradaTitulo,
-										ano: entradaAno,
-										descricao: entradaDescricao);
+			do{
+				Console.Write("Digite o gênero entre as opções acima: ");
+				int entradaGenero = int.Parse(Console.ReadLine());
+				novaSerie.addGenero((Genero)entradaGenero);
+				Console.WriteLine("Deseja inserir mais um gênero?(y/n)");
+			} while(Console.ReadLine().ToUpper().Equals("Y"));
 
 			repositorio.Insere(novaSerie);
 		}
@@ -166,6 +147,25 @@ namespace DIO.Series
 			string opcaoUsuario = Console.ReadLine().ToUpper();
 			Console.WriteLine();
 			return opcaoUsuario;
+		}
+
+		private static Serie CadastraSerie(int id){
+
+			Console.Write("Digite o Título da Série: ");
+			string entradaTitulo = Console.ReadLine();
+
+			Console.Write("Digite o Ano de Início da Série: ");
+			int entradaAno = int.Parse(Console.ReadLine());
+
+			Console.Write("Digite a Descrição da Série: ");
+			string entradaDescricao = Console.ReadLine();
+
+			Serie novaSerie = new Serie(id: repositorio.ProximoId(),
+										titulo: entradaTitulo,
+										ano: entradaAno,
+										descricao: entradaDescricao);
+			
+			return novaSerie;
 		}
     }
 }
