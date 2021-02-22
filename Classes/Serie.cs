@@ -9,16 +9,16 @@ namespace DIO.Series
 		private Genero[] Generos = new Genero[10];
 		private int countGeneros = 0;
 		private string Titulo { get; set; }
-		private string Descricao { get; set; }
+		private string Sinopse { get; set; }
 		private int Ano { get; set; }
         private bool Excluido {get; set;}
 
         // Métodos
-		public Serie(int id, string titulo, string descricao, int ano)
+		public Serie(int id, string titulo, string sinopse, int ano)
 		{
 			this.Id = id;
 			this.Titulo = titulo;
-			this.Descricao = descricao;
+			this.Sinopse = sinopse;
 			this.Ano = ano;
             this.Excluido = false;
 		}
@@ -34,7 +34,7 @@ namespace DIO.Series
 			}
 			retorno += Environment.NewLine;
             retorno += "Titulo: " + this.Titulo + Environment.NewLine;
-            retorno += "Descrição: " + this.Descricao + Environment.NewLine;
+            retorno += "Descrição: " + this.Sinopse + Environment.NewLine;
             retorno += "Ano de Início: " + this.Ano + Environment.NewLine;
             retorno += "Excluido: " + this.Excluido;
 			return retorno;
