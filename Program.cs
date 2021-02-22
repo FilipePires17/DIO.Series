@@ -4,8 +4,6 @@ TODO:
 aumentar as opções
 adicionar filmes
 tratar erros e melhorar experiencia do usuário com perguntas de confirmação
-procurar se há interfaces gráficas de fácil implementação para deixar o projeto mais bonito
-pensar em mais coisas se for o caso
 enviar :)
 */
 namespace DIO.Series
@@ -104,8 +102,8 @@ namespace DIO.Series
 			foreach (var serie in lista)
 			{
                 var excluido = serie.retornaExcluido();
-                
-				Console.WriteLine("#ID {0}: - {1} {2}", serie.retornaId(), serie.retornaTitulo(), (excluido ? "*Excluído*" : ""));
+
+				Console.WriteLine(excluido ? $"#ID {serie.retornaId()}: - *Não disponível*" : "#ID {0}: - {1}", serie.retornaId(), serie.retornaTitulo());
 			}
 		}
 
@@ -163,7 +161,7 @@ namespace DIO.Series
 			Serie novaSerie = new Serie(id: repositorio.ProximoId(),
 										titulo: entradaTitulo,
 										ano: entradaAno,
-										descricao: entradaDescricao);
+										sinopse: entradaDescricao);
 			
 			return novaSerie;
 		}
