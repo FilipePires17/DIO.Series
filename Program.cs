@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 /*
 TODO: 
 aumentar as opções
-adicionar filmes
 tratar erros e melhorar experiencia do usuário com perguntas de confirmação
-generalizar entidadeBase
 enviar :)
 */
 namespace DIO.Series
@@ -16,6 +14,7 @@ namespace DIO.Series
 		static FilmeRepositorio repositorioFilme = new FilmeRepositorio();
         static void Main(string[] args)
         {
+			Console.WriteLine("DIO Séries a seu dispor!!!\n");
             string opcaoUsuario = ObterOpcaoUsuarioPrincipal();
 
 			while (opcaoUsuario.ToUpper() != "X")
@@ -69,7 +68,8 @@ namespace DIO.Series
 						break;
 
 					default:
-						throw new ArgumentOutOfRangeException();
+						Console.WriteLine("Entrada inválida, tente novamente");
+						break;
 				}
 
 				opcaoUsuarioSerie = ObterOpcaoUsuarioSerie();
@@ -110,13 +110,45 @@ namespace DIO.Series
 			if(isSerie){
 				Console.Write("Digite o id da série: ");
 				int indiceSerie = int.Parse(Console.ReadLine());
+				bool entradaValida;
+				string entradaExcluir;
 
-				repositorioSerie.Exclui(indiceSerie);
+				Console.WriteLine("Tem certeza que deseja excluir a série: {0}(s/n)", repositorioSerie.Lista()[indiceSerie].retornaTitulo());
+				do{
+					entradaExcluir = Console.ReadLine();
+					if(entradaExcluir.ToLower().Equals("s")){
+						repositorioSerie.Exclui(indiceSerie);
+						entradaValida = true;
+						Console.WriteLine("Série excluída com sucesso");
+					} else if(entradaExcluir.ToLower().Equals("n")){
+						entradaValida = true;
+						Console.WriteLine("Série não excluída");
+					} else{
+						Console.WriteLine("Entrada inválida, tente novamente");
+						entradaValida = false;
+					}
+				} while(!entradaValida);
 			} else {
 				Console.Write("Digite o id do filme: ");
 				int indiceFilme = int.Parse(Console.ReadLine());
+				bool entradaValida;
+				string entradaExcluir;
 
-				repositorioFilme.Exclui(indiceFilme);
+				Console.WriteLine("Tem certeza que deseja excluir o filme: {0}(s/n)", repositorioFilme.Lista()[indiceFilme].retornaTitulo());
+				do{
+					entradaExcluir = Console.ReadLine();
+					if(entradaExcluir.ToLower().Equals("s")){
+						repositorioFilme.Exclui(indiceFilme);
+						entradaValida = true;
+						Console.WriteLine("Filme excluído com sucesso");
+					} else if(entradaExcluir.ToLower().Equals("n")){
+						entradaValida = true;
+						Console.WriteLine("Filme não excluído");
+					} else{
+						Console.WriteLine("Entrada inválida, tente novamente");
+						entradaValida = false;
+					}
+				} while(!entradaValida);
 			}
 		}
         private static void VisualizarItem(bool isSerie)
@@ -154,8 +186,8 @@ namespace DIO.Series
 					Console.Write("Digite o gênero entre as opções acima: ");
 					int entradaGenero = int.Parse(Console.ReadLine());
 					atualizaSerie.addGenero((Genero)entradaGenero);
-					Console.WriteLine("Deseja inserir mais um gênero?(y/n)");
-				} while(Console.ReadLine().ToUpper().Equals("Y"));
+					Console.WriteLine("Deseja inserir mais um gênero?(sim/nao)");
+				} while(Console.ReadLine().ToLower().Equals("sim"));
 
 				repositorioSerie.Atualiza(indiceSerie, atualizaSerie);
 			} else{
@@ -172,8 +204,8 @@ namespace DIO.Series
 					Console.Write("Digite o gênero entre as opções acima: ");
 					int entradaGenero = int.Parse(Console.ReadLine());
 					atualizaFilme.addGenero((Genero)entradaGenero);
-					Console.WriteLine("Deseja inserir mais um gênero?(y/n)");
-				} while(Console.ReadLine().ToUpper().Equals("Y"));
+					Console.WriteLine("Deseja inserir mais um gênero?(sim/nao)");
+				} while(Console.ReadLine().ToLower().Equals("sim"));
 
 				repositorioFilme.Atualiza(indiceFilme, atualizaFilme);
 			}
@@ -227,8 +259,8 @@ namespace DIO.Series
 					Console.Write("Digite o gênero entre as opções acima: ");
 					int entradaGenero = int.Parse(Console.ReadLine());
 					novaSerie.addGenero((Genero)entradaGenero);
-					Console.WriteLine("Deseja inserir mais um gênero?(y/n)");
-				} while(Console.ReadLine().ToUpper().Equals("Y"));
+					Console.WriteLine("Deseja inserir mais um gênero?(sim/nao)");
+				} while(Console.ReadLine().ToLower().Equals("sim"));
 
 				repositorioSerie.Insere(novaSerie);
 			} else{
@@ -244,8 +276,8 @@ namespace DIO.Series
 					Console.Write("Digite o gênero entre as opções acima: ");
 					int entradaGenero = int.Parse(Console.ReadLine());
 					novoFilme.addGenero((Genero)entradaGenero);
-					Console.WriteLine("Deseja inserir mais um gênero?(y/n)");
-				} while(Console.ReadLine().ToUpper().Equals("Y"));
+					Console.WriteLine("Deseja inserir mais um gênero?(sim/nao)");
+				} while(Console.ReadLine().ToLower().Equals("sim"));
 
 				repositorioFilme.Insere(novoFilme);
 			}
@@ -253,12 +285,11 @@ namespace DIO.Series
         private static string ObterOpcaoUsuarioPrincipal()
 		{
 			Console.WriteLine();
-			Console.WriteLine("DIO Séries a seu dispor!!!");
 			Console.WriteLine("Informe a opção desejada:");
 
 			Console.WriteLine("1- Listar séries e filmes");
-			Console.WriteLine("2- Atualizar séries");
-			Console.WriteLine("3- Atualizar filmes");
+			Console.WriteLine("2- Atualizar e visualizar séries");
+			Console.WriteLine("3- Atualizar e visualizar filmes");
 			Console.WriteLine("C- Limpar Tela");
 			Console.WriteLine("X- Sair");
 			Console.WriteLine();
@@ -305,10 +336,31 @@ namespace DIO.Series
 			Console.Write("Digite a Descrição da Série: ");
 			string entradaDescricao = Console.ReadLine();
 
+			Console.Write("A Série já foi finalizada?(sim/nao): ");
+			string entradaTerminado;
+			bool terminado, entradaValida;
+			do{
+				entradaTerminado = Console.ReadLine();
+				if(entradaTerminado.ToLower().Equals("sim")){
+					terminado = true;
+					entradaValida = true;
+				}
+				else if(entradaTerminado.ToLower().Equals("nao")){
+					terminado = false;
+					entradaValida = true;
+				}
+				else{
+					Console.WriteLine("Entrada inválida, responda novamente:(sim/nao)");
+					terminado = false;
+					entradaValida = false;
+				}
+			} while(!entradaValida);
+
 			Serie novaSerie = new Serie(id: id,
 										titulo: entradaTitulo,
 										ano: entradaAno,
-										sinopse: entradaDescricao);
+										sinopse: entradaDescricao,
+										terminado: terminado);
 			
 			return novaSerie;
 		}
